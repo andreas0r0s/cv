@@ -1,0 +1,564 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2015 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+
+%we use article class because we want to fully customize the page and dont use a cv template
+\documentclass[10pt,A4]{article}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+%we use utf8 since we want to build from any machine
+\usepackage[utf8]{inputenc}		
+
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+
+% provides \isempty test
+\usepackage{xifthen}
+
+%----------------------------------------------------------------------------------------
+%	FONT
+%----------------------------------------------------------------------------------------
+
+% some tex-live fonts - choose your own
+
+%\usepackage[defaultsans]{droidsans}
+%\usepackage[default]{comfortaa}
+%\usepackage{cmbright}
+%\usepackage[default]{raleway}
+%\usepackage{fetamont}
+%\usepackage[default]{gillius}
+\usepackage[light,math]{iwona}
+%\usepackage[thin]{roboto} 
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}		
+
+\usepackage{fontawesome}
+
+% Hyperlinks
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\urlstyle{same}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+%debug page outer frames
+%\usepackage{showframe}			
+
+
+%define page styles using geometry
+\usepackage[a4paper]{geometry}		
+
+% for example, change the margins to 2 inches all round
+\geometry{top=1cm, bottom=-.6cm, left=0.4cm, right=1cm} 	
+
+
+%less space between header and content
+\setlength{\headheight}{-5pt}		
+
+
+%customize entries left, center and right
+%\lhead{}
+%\chead{ \small{Jan Küster  $\cdot$ Consultant and Software Engineer $\cdot$  Bremen, Germany  $\cdot$  \textcolor{sectcol}{\textbf{info@jankuester.com}}  $\cdot$ +49 176 313 *** **}}
+%\rhead{}
+
+
+%indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for layouting tables
+\usepackage{multicol}			
+\usepackage{multirow}
+
+%extended aligning of tabular cells
+\usepackage{array}
+
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for header image
+\usepackage{graphicx}
+
+%for floating figures
+\usepackage{wrapfig}
+\usepackage{float}
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{transparent}
+\usepackage{color}
+
+%accent color
+\definecolor{complcol}{RGB}{250,150,10}
+
+%dark background color
+\definecolor{bgcol}{RGB}{110,110,110}
+
+%light background / accent color
+\definecolor{softcol}{RGB}{225,225,225}
+
+\definecolor{sectcol}{RGB}{0,120,150}
+
+
+%============================================================================%
+%
+%
+%	DEFINITIONS
+%
+%
+%============================================================================%
+
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+	
+
+%----------------------------------------------------------------------------------------
+% 	ARROW GRAPHICS in Tikz
+%----------------------------------------------------------------------------------------
+
+% a six pointed arrow poiting to the left
+\newcommand{\tzlarrow}{(0,0) -- (0.2,0) -- (0.3,0.2) -- (0.2,0.4) -- (0,0.4) -- (0.1,0.2) -- cycle;}	
+
+% include the left arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\larrow}[1]
+{\begin{tikzpicture}[scale=0.58]
+	 \filldraw[fill=#1!100,draw=#1!100!black]  \tzlarrow
+ \end{tikzpicture}
+}
+
+% a six pointed arrow poiting to the right
+\newcommand{\tzrarrow}{ (0,0.2) -- (0.1,0) -- (0.3,0) -- (0.2,0.2) -- (0.3,0.4) -- (0.1,0.4) -- cycle;}
+
+% include the right arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\rarrow}
+{\begin{tikzpicture}[scale=0.7]
+	\filldraw[fill=sectcol!100,draw=sectcol!100!black] \tzrarrow
+ \end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	custom sections
+%----------------------------------------------------------------------------------------
+
+% create a coloured box with arrow and title as cv section headline
+% param 1: section title
+%
+\newcommand{\cvsection}[1]
+{
+\colorbox{sectcol}{\mystrut \makebox[1\mpwidth][l]{
+\larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \textbf{\textcolor{white}{\uppercase{#1}}}\hspace{4pt}
+}}\\
+}
+
+% create a coloured arrow with title as cv meta section section
+% param 1: meta section title
+%
+\newenvironment{metasection}[1] {
+	\vspace{6pt}
+	\begin{center}
+		\textcolor{white}{\large{\uppercase{#1}}}\\
+	\normalsize
+	\parbox{0.7\mpwidth}{\textcolor{white}	\hrule}
+}{\end{center}}
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% creates a stretched box as cv entry headline followed by two paragraphs about 
+% the work you did
+% param 1:	event time i.e. 2014 or 2011-2014 etc.
+% param 2:	event name (what did you do?)
+% param 3:	institution (where did you work / study)
+% param 4:	what was your position
+% param 5:	some words about your contributions
+%
+\newcommand{\cvevent}[5]
+{
+\vspace{8pt}
+	\begin{tabular*}{1\mpwidth}{p{0.55\mpwidth}  x{0.42\mpwidth}}
+ 	\textcolor{black}{\textbf{#2}} & \textcolor{complcol}{#3}, \textcolor{bgcol}{#1} 
+
+	\end{tabular*}
+\vspace{-12pt}
+\textcolor{softcol}{\hrule}
+\vspace{6pt}
+	\begin{tabular*}{0.5\mpwidth}{p{\mpwidth}}
+\larrow{softcol}  #4\\[3pt]
+\larrow{softcol}  #5\\[6pt]
+	\end{tabular*}
+
+}
+
+% creates a stretched box as 
+\newcommand{\cveventmeta}[2]
+{
+	\mbox{\mystrut \hspace{87pt}\textit{#1}}\\
+	#2
+}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM STRUT FOR EMPTY BOXES
+%----------------------------------------- -----------------------------------------------
+\newcommand{\mystrut}{\rule[-.3\baselineskip]{0pt}{\baselineskip}}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM LOREM IPSUM
+%----------------------------------------------------------------------------------------
+\newcommand{\lorem}
+{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus.}
+
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+%----------------------------------------------------------------------------------------
+%	ICON-SET EMBEDDING
+%---------------------------------------------------------------------------------------- 
+
+% at this point we simplify our icon-embedding by simply referring to a set of png images.
+% if you find a good way of including svg without conflicting with other packages you can
+% replace this part
+\newcommand{\icon}[3]{\makebox(#2, #2){\textcolor{#3}{\csname fa#1\endcsname}}}	%icon shortcut
+\newcommand{\icontext}[4]{ 						%icon with text shortcut
+	\vcenteredhbox{\icon{#1}{#2}{#4}} \vcenteredhbox{\textcolor{#4}{#3}}
+}
+
+
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+\fcolorbox{white}{white}{\begin{minipage}[c][0.95\textheight][t]{0.69\linewidth}
+
+
+%---------------------------------------------------------------------------------------
+%	TITLE HEADLINE
+%----------------------------------------------------------------------------------------
+\vspace{-3pt}
+% use this for multiple words like working titles etc.
+%\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\hspace{46pt}\HUGE{\textcolor{white}{\uppercase{M.Sc. Jan Küster}} } \textcolor{sectcol}{\rule[-1mm]{1mm}{0.9cm}} \parbox[b]{5cm}{   \large{ \textcolor{white}{{IT Consultant}}}\\
+% \large{ \textcolor{white}{{JS Fullstack Engineer}}}}
+%}}
+
+% use this for single words, e.g. CV or RESUME etc.
+\colorbox{bgcol}{\makebox[\mpwidth][c]{\huge{\textcolor{white}{\uppercase{Andreas R. Spyridakis}} } \textcolor{sectcol}{\rule[-1mm]{1mm}{0.9cm}} \huge{\textcolor{white}{\uppercase{Currículo}} } }}
+
+%----------------------------------------------------------------------------------------
+%	HEADER IMAGE
+%----------------------------------------------------------------------------------------
+
+
+%\hspace{-1.6cm}
+%\includegraphics[trim= 0 250 0 270,clip,width=1\linewidth+3.1cm]{myfoto.jpg}	%trimming relative to image size!
+%\includegraphics[trim= 350 150 0 200, clip ,width=\linewidth]{myfoto.jpg}	%trimming relative to image size
+\includegraphics[trim= 10 25 0 0, clip ,width=150]{myfoto.jpg}	%trimming relative to image size
+
+%---------------------------------------------------------------------------------------
+%	SUMMARY
+%----------------------------------------------------------------------------------------
+\transparent{0.85}%
+\vspace{-120pt} % Original: -130pt
+\hspace{0.4\linewidth}
+\colorbox{bgcol}{
+	\parbox{0.5\linewidth}{
+		\transparent{1}%
+		\begin{center}
+		\larrow{sectcol}\larrow{sectcol}\textcolor{white}{Aluno de ciência da computação no 5º semestre com experiência em suporte de TI para órgão local da Administração Pública do Distrito Federal.}
+		\end{center}
+	}
+}
+\vspace{50pt}
+
+%============================================================================%
+%
+%	CV SECTIONS AND EVENTS (MAIN CONTENT)
+%
+%============================================================================%
+
+%---------------------------------------------------------------------------------------
+%	STATUS
+%----------------------------------------------------------------------------------------
+%\cvsection{Status}
+\cvsection{Descrição}
+
+Aluno de bacharelado de ciência da computação (5º semestre) com experiência prévia em suporte de TI da Administração Pública em órgão do Poder Executivo.
+
+\vspace{12pt}
+%---------------------------------------------------------------------------------------
+%	EXPERIENCE
+%----------------------------------------------------------------------------------------
+\cvsection{Experiência}
+%\cvsection{Experience}
+
+%
+\cvevent{2022 - 2024}{Estagiário de TI}{\href{https://www.cruzeiro.df.gov.br/}{\underline{Administração Regional do Cruzeiro}} - Brasília, DF}{Estágio no Núcleo de Informática da RA Cruzeiro de \textit{\textbf{maio de 2022 a maio de 2024}} com suporte técnico e operacional de TI}{
+    \textbf{Atividades realizadas}:
+    \begin{itemize}
+        \item \textbf{Instalação, configuração e manutenção} de equipamentos de TI, além de \textbf{criar e manter documentação} de TI atualizada
+        \item \textbf{Elaboração} do \href{https://cruzeiro.df.gov.br/wp-conteudo/uploads/2024/04/PDTI-RA-CRUZ-\%E2\%80\%93-2023\_2026.pdf}{\underline{\textbf{PDTI da Administração do Cruzeiro de 2023-2026}}}
+        \item \textbf{Levantamento de especificações técnicas} e \textbf{criação} de documentos de \textbf{requisição de compra} de \textbf{switches} e de \textbf{nobreaks}
+        \item Demais atividades do estágio listadas no currículo completo: \href{}{\underline{\texttt{link de acesso}}}.
+    \end{itemize}
+}
+
+%\textcolor{softcol}{\hrule}
+
+
+%\cvevent{2014 - 2016}{IT Consultant for IBM XPages and Notes Domino}{We4IT GmbH Bremen}{Realize projects in XPages and We4IT Aveedo, monitor project status, conduct reports}{Integrated Camunda BPMN engine and BPMN.IO modeler in We4IT Aveedo}
+
+
+%\textcolor{softcol}{\hrule}
+
+
+%\cvevent{maio de 2022 - maio de 2024}{Scientific Employee / Software Development}{University of Bremen}{Invented a flexible assessment framework, targeting industrial trainees}{Supervised software development lifecycle, Recruited team members}
+
+%\textcolor{softcol}{\hrule}
+
+%
+%\cvevent{2011 / 11}{Project Management Simulation Training}{Getoq Consulting}{Performed a two-day project simulation from management perspective}{Topics included customer contracts, change management, controlling, operational tasks}
+
+%\textcolor{softcol}{\hrule}
+
+
+%
+%\cvevent{2010 - 2011}{Student Assistant / Programmer}{otulea.uni-bremen.de}{Realized an online diagnosis platform for workforce literacy development (Flex)}{Modeled software design, implemented various prototypes, conducted usability tests}
+
+%\vspace{12pt}
+%---------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%--------------------------------------------------------------------------------------
+\cvsection{Educação}
+
+\cvevent{2023 / 2026}{\href{https://www.iesb.br/cursos/ciencia-da-computacao/}{\underline{Bacharelado em ciência da computação}}}{\href{https://www.iesb.br/home/}{\underline{IESB}}}{Cursando o \textbf{5º semestre}, com previsão para \textbf{finalizar no 2º sem. de 2026}}{\textbf{Histórico acadêmico}: \href{https://www.icloud.com/iclouddrive/0d2XAQ77LrkM017aAy-FNSqxQ\#2025-03-11_IESB_Historico_academico_Andreas_Ramalho_Spyridakis}{\underline{\texttt{link para baixar}}}}
+
+%\textcolor{softcol}{\hrule}
+
+%\cvevent{2012 - 2013}{Master Project - PrIMA}{University of Bremen}{Co-Invented a touch table application for medical support, co-developed software (Java) }{Formed a scrum team, mainted project dev server (Debian), surveyed target audience}
+
+%\textcolor{softcol}{\hrule}
+
+%\cvevent{2012 - 2015}{Master Studies Digital Media}{University of Bremen}{Inter-cultural classes in English, covering special topics in computer science and design}{Professionalized in research methods, software development and e-assessment}
+
+%\textcolor{softcol}{\hrule}
+
+%\cvevent{2009 - 2010}{Semester Abroad}{University of Melbourne}{Mastered six months of study and trans-cultural experience in Melbourne, Australia}{Finished machine programming, information visualization, professional essay writing}
+
+%\vspace{12pt}
+%---------------------------------------------------------------------------------------
+%	EXTRACURRICULAR SECTION
+%--------------------------------------------------------------------------------------
+\cvsection{EXTRACURRICULAR}
+
+\cvevent{03/03/2025}{\href{https://skills.yourlearning.ibm.com/activity/PLAN-3E2A749669E2}{\underline{Information Technology Fundamentals}}}{\href{https://skillsbuild.org/}{\underline{IBM SkillsBuild}}}{\textbf{Certificado de conclusão}: \href{https://www.icloud.com/iclouddrive/02bW9VQZK3lxleAA3KpnVLDew\#2025-03-06_IBM_SkillsBuild_IT_fundamentals_completion_certificate_02_Andreas}{\underline{\texttt{link para baixar}}}}{\textit{Mini-curso organizado pela IBM na plataforma SkillsBuild com o intuito de informar sobre a história da computação e conceitos essenciais de TI.}}
+
+\cvevent{Set. de 2022}{\href{https://www.escolavirtual.gov.br/curso/74}{\underline{SEI! USAR}}}{\href{https://www.escolavirtual.gov.br/}{\underline{Escola Virtual do Governo}}}{\textbf{Certificado de conclusão}: \href{https://www.icloud.com/iclouddrive/089UXLIO9A-A7_NxhjwnhKtLQ\#ev\%5Fg-certificado-Sistema\%5Feletronico\%5Fde\%5Finformacoes\%5FSEI\%5Fusar-Andreas\%5FRamalho\%5FSpyridakis}{\underline{\texttt{link para baixar}}}}{\textit{Curso rápido sobre o histórico e uso do sistema de gerenciamento de processos eletrônicos entre os órgãos do Estado brasileiro.}}
+
+\cvevent{31/08/2023}{\href{https://www.englishtest.duolingo.com/applicants}{\underline{Teste de inglês do Duolingo}}}{\href{https://www.duolingo.com/}{\underline{Duolingo}}}{\textbf{Certificados}: \href{https://www.icloud.com/iclouddrive/070IIpYArI7B0amk6WXEumarg\#Duolingo\%5FEnglish\%5FTest-Certificado-Andreas\%5FRamalho\%5FSpyridakis}{\underline{\texttt{certificado do exame}}}}{\textbf{Resultados}: \href{https://certs.duolingo.com/7a01813affab530a8699ceb49bb3bffe}{\underline{\texttt{link para consultar}}}}
+
+\textcolor{sectcol}{Demais atividades extracurriculares e certificados estão listados no currículo completo: \href{}{\underline{\texttt{link de acesso}}}.}
+
+\end{minipage}}%
+\fcolorbox{white}{sectcol}{\begin{minipage}[c][0.95\textheight][t]{0.33\linewidth}
+
+
+\begin{metasection}{Contato}
+
+	\icontext{MapMarker}{12}{Brasília, Distrito Federal}{white}\\[6pt]
+	\icontext{MobilePhone}{12}{+55 61 *****-7578}{white}\\[6pt]
+	\icontext{Send}{12}{andreas.oxyz@proton.me}{white}\\[6pt]
+	\icontext{MousePointer}{12}{andreas0r0s.carrd.co/}{white}\\[6pt]
+	\icontext{Github}{12}{github.com/andreas0r0s}{white}\\[6pt]
+	\icontext{Linkedin}{12}{linkedin.com/in/andreas0r0s/}{white}\\[6pt]
+
+\end{metasection}
+	
+%----------------------------------------------------------------------------------------
+%	META SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{metasection}{Habilidades}
+%\begin{metasection}{Campos}
+%\begin{metasection}{Fields}
+
+%\icontext{Code}{12}{Suporte de TI}{white}\\
+%\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\\[6pt]
+
+%\icontext{CommentsO}{12}{Desenvolvimento de software}{white}\\
+%\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
+
+%\icontext{CodeFork}{12}{Redes de computadores}{white}\\
+%\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
+
+%\icontext{CodeFork}{12}{Comunicação}{white}\\
+%\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
+
+\icontext{Support}{12}{Suporte ao usuário}{white}\\
+\icontext{CodeFork}{12}{Solução de problemas/Troubleshoot}{white}\\
+\icontext{FilesO}{12}{Documentação}{white}\\
+\icontext{AlignJustify}{12}{Organização}{white}\\
+\icontext{Comments}{12}{Comunicação}{white}\\
+\icontext{Tasks}{12}{Proatividade}{white}\\
+
+\end{metasection}
+
+\begin{metasection}{Linguas}
+
+\icontext{Language}{12}{Português (nativo)}{white}\\
+\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\\[6pt]
+
+\icontext{Language}{12}{Inglês (avançado)}{white}\\
+\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\\[6pt]
+
+\end{metasection}
+
+\begin{metasection}{Tecnologias}
+
+\textcolor{white}{
+\icontext{Code}{12}{Python, JavaScript, LaTeX}{white} \\[6pt]
+\icontext{Code}{12}{HTML, CSS, Markdown, Org-mode}{white} \\[6pt]
+\icontext{Code}{12}{Docker, Portainer}{white} \\[6pt]
+\icontext{Database}{12}{MongoDB, MySQL/MariaDB}{white} \\[6pt]
+\icontext{CodeFork}{12}{Git}{white} \\[6pt]
+}
+\end{metasection}
+
+\begin{metasection}{Ferramentas}
+
+\textcolor{white}{
+\icontext{Code}{12}{Eclipse IDE, Visual Studio Code}{white}\\
+\icontext{Code}{12}{Vim, Emacs}{white} \icontext{CodeFork}{12}{GitHub, GitLab}{white}\\[6pt]
+\icontext{Terminal}{12}{Shell, Bash}{white}  \\
+\icontext{Terminal}{12}{PowerShell, Command Prompt}{white}  \\
+\icontext{PaintBrush}{12}{GIMP}{white}\icontext{Cube}{12}{Blender}{white}\\
+\icontext{File}{12}{MS Office 365, LibreOffice}{white}
+}
+\end{metasection}
+
+\begin{metasection}{Atividades}
+
+\textcolor{white}{\LARGE{\icon{Gamepad}{24}{white} \icon{Book}{24}{white}  \icon{Bicycle}{24}{white}}}
+\end{metasection}
+
+\begin{metasection}{Sistemas operacionais}
+
+%\textcolor{white}{\LARGE{\icon{Linux}{24}{white}} \large{Linux} \LARGE{\icon{Apple}{24}{white}} \large{macOS}  \LARGE{\icon{Windows}{24}{white}} \large{Windows}}
+
+\textcolor{white}{\large{
+\icontext{Linux}{12}{Linux}{white} \icontext{Apple}{12}{macOS}{white}\\[6pt]
+\icontext{Windows}{12}{Windows 10/11}{white}}
+}
+
+\end{metasection}
+
+%---------------------------------------------------------------------------------------
+%	QR CODE (optional)
+%----------------------------------------------------------------------------------------
+
+%\vspace{12pt}
+%\begin{center}
+%\includegraphics[width=0.35\mpwidth]{qrcode}
+%\end{center}
+
+\end{minipage}}
+
+%-------------------------------------------------------------------------------------------------
+%	ARTIFICIAL FOOTER (fancy footer cannot exceed linewidth) 
+%--------------------------------------------------------------------------------------------------
+
+\null
+\vspace*{\fill}
+\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\mystrut \small \textcolor{white}{Copyright 2025 andreas.oxyz@proton.me} $\cdot$ \textcolor{white}{licenciado sob a licensa MIT} $\cdot$ \textcolor{white}{Escrito em \LaTeX} $\cdot$ \textcolor{white}{Por Andreas R. S.}}}
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT END
+%
+%
+%
+%============================================================================%
+\end{document}
