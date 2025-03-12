@@ -8,6 +8,6 @@ This is my repository to house my CV: [curriculum vitae](https://github.com/andr
 
 Ferramento usada para edição do arquivos `.tex`: [Overleaf](https://www.overleaf.com/).
 
-Versão original deste currículo: [latexcv.pro](https://latexcv.pro/).
+Modelo de documento usado para esse currículo: [latexcv.pro](https://latexcv.pro/).
 
-Autor original do template: [Jan Küster](https://github.com/jankapunkt).
+Autor original do modelo: [Jan Küster](https://github.com/jankapunkt).
